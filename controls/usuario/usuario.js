@@ -117,7 +117,7 @@ const updateUsuario = async (req, res) => {
 
         if(estado){
             if(estado !== 'activo' && estado !== 'inactivo'){
-                return res.status(400).json({error: "Los valoes de el campo 'estado' tiene que ser 'activo' o 'inactivo'"});
+                return res.status(400).json({error: "Los valores de el campo 'estado' tiene que ser 'activo' o 'inactivo'"});
             }
             update.push('estado = ?');
             values.push(estado);

@@ -14,8 +14,16 @@ const { getCostoVarios } = require('./controls/costovarios/costovarios');
 const costoRouter = require('./router/costoRouter/costoRouter');
 const { getMotos } = require('./controls/motos/motos');
 const motosRouter = require('./router/motosRouter/motosRouter');
+const { getColor } = require('./controls/colorModelo/color');
+const colorRouter = require('./router/colorRouter/colorRouter');
+const { getcolorMotos } = require('./controls/colorMoto/colorMoto');
+const colorMotoRouter = require('./router/colorMotoRouter/colorMotoRouter');
+const imagenRouter = require('./router/colorMotoRouter/imagenRouter');
+const { getProformas, getCotizacion, getCotizacionAsesor } = require('./controls/proforma/proforma');
+const proformaRouter = require('./router/proformaRouter/proformaRouter');
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors ({
     origin: [
@@ -37,6 +45,11 @@ io.on('connection', (socket) => {
     socket.on('obtenerCliente', ()=> getCliente(socket));
     socket.on('obtenerCostoVarios', () => getCostoVarios(socket));
     socket.on('obtenerMotos', () => getMotos(socket));
+    socket.on('obtenerColor', () => getColor(socket));
+    socket.on('obtenerColorMoto', () => getcolorMotos(socket));
+    socket.on('obtenerProforma', () => getProformas(socket));
+    socket.on('obtenerCotizacion', () => getCotizacion(socket));
+    socket.on('obtenerUsuario', () => getCotizacionAsesor(socket));
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
@@ -52,7 +65,10 @@ app.use('/', sucursalRouter);
 app.use('/', clienteRouter);
 app.use('/', costoRouter);
 app.use('/', motosRouter);
-
+app.use('/', colorRouter);
+app.use('/', colorMotoRouter);
+app.use('/api', imagenRouter);
+app.use('/', proformaRouter);
 
 const PORT = process.env.API_PORT || 3001;
 server.listen(PORT, () => {
