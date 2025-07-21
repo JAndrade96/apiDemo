@@ -21,6 +21,8 @@ const colorMotoRouter = require('./router/colorMotoRouter/colorMotoRouter');
 const imagenRouter = require('./router/colorMotoRouter/imagenRouter');
 const { getProformas, getCotizacion, getCotizacionAsesor } = require('./controls/proforma/proforma');
 const proformaRouter = require('./router/proformaRouter/proformaRouter');
+const { getEtiqueta } = require('./controls/etiquetas/etiquetas');
+const etiquetaRouter = require('./router/etiquetaRouter/etiquetaRouter');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,6 +52,7 @@ io.on('connection', (socket) => {
     socket.on('obtenerProforma', () => getProformas(socket));
     socket.on('obtenerCotizacion', () => getCotizacion(socket));
     socket.on('obtenerUsuario', ({id_usuario}) => getCotizacionAsesor(socket, id_usuario));
+    socket.on('obtenerEtiqueta', () => getEtiqueta(socket));
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
@@ -69,6 +72,7 @@ app.use('/', colorRouter);
 app.use('/', colorMotoRouter);
 app.use('/api', imagenRouter);
 app.use('/', proformaRouter);
+app.use('/', etiquetaRouter);
 
 const PORT = process.env.API_PORT || 3001;
 server.listen(PORT, () => {
