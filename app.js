@@ -23,6 +23,7 @@ const { getProformas, getCotizacion, getCotizacionAsesor } = require('./controls
 const proformaRouter = require('./router/proformaRouter/proformaRouter');
 const { getEtiqueta } = require('./controls/etiquetas/etiquetas');
 const etiquetaRouter = require('./router/etiquetaRouter/etiquetaRouter');
+const etiquetaClienteRouter = require('./router/etiquetaCliente/etiquetaCliente');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -73,6 +74,7 @@ app.use('/', colorMotoRouter);
 app.use('/api', imagenRouter);
 app.use('/', proformaRouter);
 app.use('/', etiquetaRouter);
+app.use('/', etiquetaClienteRouter);
 
 const PORT = process.env.API_PORT || 3001;
 server.listen(PORT, () => {
