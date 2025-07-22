@@ -3,11 +3,11 @@ const socket = io('http://localhost:3000');
 
 socket.on('connect', () => {
     console.log('✅ Conectado al servidor WebSocket');
-    socket.emit('obtenerEtiqueta');
+    socket.emit('obtenerEtiquetaCliente');
 });
 
-socket.on('etiqueta', (data) => {
-    console.log('📦 Cotizaciones recibidas:', data);
+socket.on('etiquetaData', (data) => {
+    console.log('📦 Datos recibidos:', data);
 });
 
 

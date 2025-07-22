@@ -24,6 +24,7 @@ const proformaRouter = require('./router/proformaRouter/proformaRouter');
 const { getEtiqueta } = require('./controls/etiquetas/etiquetas');
 const etiquetaRouter = require('./router/etiquetaRouter/etiquetaRouter');
 const etiquetaClienteRouter = require('./router/etiquetaCliente/etiquetaCliente');
+const { getEtiquetaCliente } = require('./controls/etiquetaCliente/etiquetaCliente');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -54,6 +55,7 @@ io.on('connection', (socket) => {
     socket.on('obtenerCotizacion', () => getCotizacion(socket));
     socket.on('obtenerUsuario', ({id_usuario}) => getCotizacionAsesor(socket, id_usuario));
     socket.on('obtenerEtiqueta', () => getEtiqueta(socket));
+    socket.on('obtenerEtiquetaCliente', () => getEtiquetaCliente(socket));
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
