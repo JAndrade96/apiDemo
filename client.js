@@ -3,10 +3,10 @@ const socket = io('http://localhost:7001');
 
 socket.on('connect', () => {
     console.log('✅ Conectado al servidor WebSocket');
-    socket.emit('obtenerColorMoto');
+    socket.emit('obtenerUsuario');
 });
 
-socket.on('colormoto', (data) => {
+socket.on('usuario', (data) => {
     console.log('📦 Datos recibidos:', data);
 });
 

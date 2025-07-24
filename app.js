@@ -31,31 +31,27 @@ app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 
+const allowedOrigins = [
+    'http://localhost:7001',
+    'http://177.222.114.122',
+    'http://localhost',
+    'http://localhost:5173',
+    'http://localhost:5174'
+  ];
+
 const io = socketIo(server, {
     cors: {
-      origin: [
-        'http://localhost:7001',
-        'http://177.222.114.122',
-        'http://localhost',
-        'http://localhost:5173',
-        'http://localhost:5174'
-      ],
-      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+      origin: allowedOrigins,
+      methods: ['GET'],
       credentials: true
     }
-  });
+});
 
-/*app.use(cors ({
-    origin: [
-        'http://localhost:7001',
-        'http://177.222.114.122',
-        'http://localhost',
-        'http://localhost:5173',
-        'http://localhost:5174'
-    ],
+app.use(cors({
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
     credentials: true
-}));*/
+}));
 
 /*const io = socketIo(server);*/
 
@@ -71,7 +67,7 @@ io.on('connection', (socket) => {
     socket.on('obtenerColorMoto', () => getcolorMotos(socket));
     socket.on('obtenerProforma', () => getProformas(socket));
     socket.on('obtenerCotizacion', () => getCotizacion(socket));
-    socket.on('obtenerUsuario', ({id_usuario}) => getCotizacionAsesor(socket, id_usuario));
+    socket.on('obtenerUsuarioCliente', ({id_usuario}) => getCotizacionAsesor(socket, id_usuario));
     socket.on('obtenerEtiqueta', () => getEtiqueta(socket));
     socket.on('obtenerEtiquetaCliente', () => getEtiquetaCliente(socket));
 
