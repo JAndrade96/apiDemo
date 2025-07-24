@@ -29,7 +29,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors ({
+const server = http.createServer(app);
+
+const io = socketIo(server, {
+    cors: {
+      origin: [
+        'http://localhost:7001',
+        'http://177.222.114.122',
+        'http://localhost',
+        'http://localhost:5173',
+        'http://localhost:5174'
+      ],
+      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+      credentials: true
+    }
+  });
+
+/*app.use(cors ({
     origin: [
         'http://localhost:7001',
         'http://177.222.114.122',
@@ -39,10 +55,9 @@ app.use(cors ({
     ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
     credentials: true
-}));
+}));*/
 
-const server = http.createServer(app);
-const io = socketIo(server);
+/*const io = socketIo(server);*/
 
 io.on('connection', (socket) => {
     console.log("Cliente conectado:", socket.id);

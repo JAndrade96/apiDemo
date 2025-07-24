@@ -19,16 +19,16 @@ const getMotos = async (socket) => {
 //Controlador POST para agregar motos
 
 const addMotos = async (req, res) => {
-    const { modelo } = req.body;
+    const { modelo, precio_usd, inicial_bs } = req.body;
     const fecha_registro = new Date();
     
-    if(!modelo){
+    if(!modelo || !precio_usd || !inicial_bs){
         return res.status(400).json({ error: "El campo modelo de moto es obligatorio" });
     }
 
     try{
-        const query = "INSERT INTO motos (modelo, fecha_registro) VALUES (?, ?)";
-        const values = [modelo, fecha_registro];
+        const query = "INSERT INTO motos (modelo, precio_usd, inicial_bs, fecha_registro) VALUES (?, ?, ?, ?)";
+        const values = [modelo, precio_usd, inicial_bs, fecha_registro];
 
         db.query(query, values, (error, result) => {
             if(error){
@@ -47,7 +47,7 @@ const addMotos = async (req, res) => {
 
 const updateMotos = async (req, res) => {
     const { id } = req.params;;
-    const { modelo } = req.body;
+    const { modelo, precio_usd, inicial_bs } = req.body;
 
     const update = [];
     const values = [];
@@ -55,6 +55,16 @@ const updateMotos = async (req, res) => {
     if(modelo){
         update.push('modelo = ?');
         values.push(modelo)
+    }
+
+    if(precio_usd){
+        update.push('precio_usd = ?');
+        values.push(precio_usd)
+    }
+
+    if(inicial_bs){
+        update.push('inicial_bs = ?');
+        values.push(inicial_bs)
     }
 
     if(update.length === 0){
