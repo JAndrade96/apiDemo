@@ -16,7 +16,7 @@ const getcolorMotos = async (socket) => {
             return {
                 ...row,
                 img_moto_url: row.img_moto 
-                    ? `http://localhost:3000/api/imagen/${row.img_moto}` 
+                    ? `http://177.222.114.122:7001/imagen/${row.img_moto}` 
                     : null
             };
         });

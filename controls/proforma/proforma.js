@@ -87,7 +87,7 @@ const getCotizacion = async (socket) => {
                     return{
                         ...rows,
                         img_moto_url: rows.img_moto
-                        ? `http://localhost:3000/api/imagen/${rows.img_moto}`
+                        ? `http://177.222.114.122:7001/imagen/${rows.img_moto}`
                         : null
                     };
                 });
@@ -141,7 +141,7 @@ const getCotizacionAsesor = async (socket, id_usuario) => {
                 return {
                     ...rows,
                     img_moto_url: rows.img_moto
-                    ? `http://localhost:3000/api/imagen/${rows.img_moto}`
+                    ? `http://177.222.114.122:7001/imagen/${rows.img_moto}`
                     : null
                 }
             });

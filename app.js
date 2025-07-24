@@ -31,8 +31,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors ({
     origin: [
-        'http://localhost:3000',
-        'http://localhost'
+        'http://localhost:7001',
+        'http://177.222.114.122',
+        'http://localhost',
+        'http://localhost:5173',
+        'http://localhost:5174'
     ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
     credentials: true
@@ -73,7 +76,7 @@ app.use('/', costoRouter);
 app.use('/', motosRouter);
 app.use('/', colorRouter);
 app.use('/', colorMotoRouter);
-app.use('/api', imagenRouter);
+app.use('/', imagenRouter);
 app.use('/', proformaRouter);
 app.use('/', etiquetaRouter);
 app.use('/', etiquetaClienteRouter);

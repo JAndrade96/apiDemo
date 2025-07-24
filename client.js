@@ -1,12 +1,12 @@
 const io = require('socket.io-client');
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:7001');
 
 socket.on('connect', () => {
     console.log('✅ Conectado al servidor WebSocket');
-    socket.emit('obtenerEtiquetaCliente');
+    socket.emit('obtenerColorMoto');
 });
 
-socket.on('etiquetaData', (data) => {
+socket.on('colormoto', (data) => {
     console.log('📦 Datos recibidos:', data);
 });
 
