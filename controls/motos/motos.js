@@ -19,16 +19,16 @@ const getMotos = async (socket) => {
 //Controlador POST para agregar motos
 
 const addMotos = async (req, res) => {
-    const { modelo, precio_usd, inicial_bs } = req.body;
+    const { modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento } = req.body;
     const fecha_registro = new Date();
     
-    if(!modelo || !precio_usd || !inicial_bs){
+    if(!modelo || !precio_usd || !inicial_bs || !cilindrada || !combustible || !rendimiento){
         return res.status(400).json({ error: "El campo modelo de moto es obligatorio" });
     }
 
     try{
-        const query = "INSERT INTO motos (modelo, precio_usd, inicial_bs, fecha_registro) VALUES (?, ?, ?, ?)";
-        const values = [modelo, precio_usd, inicial_bs, fecha_registro];
+        const query = "INSERT INTO motos (modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento, fecha_registro];
 
         db.query(query, values, (error, result) => {
             if(error){
@@ -47,24 +47,39 @@ const addMotos = async (req, res) => {
 
 const updateMotos = async (req, res) => {
     const { id } = req.params;;
-    const { modelo, precio_usd, inicial_bs } = req.body;
+    const { modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento } = req.body;
 
     const update = [];
     const values = [];
 
     if(modelo){
         update.push('modelo = ?');
-        values.push(modelo)
+        values.push(modelo);
     }
 
     if(precio_usd){
         update.push('precio_usd = ?');
-        values.push(precio_usd)
+        values.push(precio_usd);
     }
 
     if(inicial_bs){
         update.push('inicial_bs = ?');
-        values.push(inicial_bs)
+        values.push(inicial_bs);
+    }
+
+    if(cilindrada){
+        update.push('cilindrada = ?');
+        values.push(cilindrada);
+    }
+
+    if(combustible){
+        update.push('combustible = ?');
+        values.push(combustible);
+    }
+
+    if(rendimiento){
+        update.push('rendimiento = ?');
+        values.push(rendimiento);
     }
 
     if(update.length === 0){
