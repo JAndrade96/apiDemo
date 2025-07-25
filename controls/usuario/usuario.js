@@ -44,7 +44,7 @@ const addUsuario = async (req, res) => {
     const { id_sucursal, nombre, usuario, contraseña, correo, telefono, roles, estado } = req.body;
     const fecha_registro = new Date();
 
-    if (!nombre || !usuario || !contraseña || !correo || !telefono | !roles) {
+    if (!nombre || !usuario || !contraseña || !correo || !telefono || !roles) {
         return res.status(400).json({ error: "Falta campos requerido"});
     }
 
