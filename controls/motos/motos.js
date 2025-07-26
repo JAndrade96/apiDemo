@@ -2,7 +2,7 @@ const db = require('../../config/db');
 
 //Controlador Socket para obtener las motos
 
-const getMotos = async (socket) => {
+/*const getMotos = async (socket) => {
     const query = 'SELECT * FROM motos';
     try{
         const [rows] = await db.promise().query(query);
@@ -14,6 +14,46 @@ const getMotos = async (socket) => {
         console.error("Error al obtener motos", err);
         socket.emit("error", { message: "Error al obtener motos" });
     }
+};*/
+
+const getMotos = async (socket) => {
+    const query = `SELECT 
+                m.id_motos,
+                m.modelo AS modelo,
+                m.precio_usd,
+                m.inicial_bs,
+                m.cilindrada,
+                m.combustible,
+                m.rendimiento,
+                p.fecha_registro,
+                c.id_color,
+                c.nombre_color AS color,
+                cm.img_moto AS img_moto
+            FROM 
+                proforma AS p
+            INNER JOIN motos AS m ON p.id_motos = m.id_motos
+            INNER JOIN colormoto AS cm ON p.id_colormoto = cm.id_colormoto
+            INNER JOIN color AS c ON cm.id_color = c.id_color
+            LIMIT 0, 25`;
+
+            try{
+                const [rows] = await db.promise().query(query);
+                if(!rows || rows.length === 0){
+                    return socket.emit('error', {message: "No se encontraron motos"});
+                }
+                const resultados = rows.map(rows => {
+                    return{
+                        ...rows,
+                        img_moto_url: rows.img_moto
+                        ? `http://177.222.114.122:7001/imagen/${rows.img_moto}`
+                        : null
+                    };
+                });
+                socket.emit('motos', resultados);
+            }catch(err){
+                console.error("Error al obtener motos:", err);
+                socket.emit('error', { message: "Error al obtener motos"});
+            }
 };
 
 //Controlador POST para agregar motos
