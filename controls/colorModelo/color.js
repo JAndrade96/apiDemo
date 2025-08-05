@@ -35,7 +35,9 @@ const addColor = async (req, res) => {
                 console.error("Error al ingresar color", error);
                 return res.status(500).json({ error: "Error al ingresar color" });
             }
-            res.status(201).json({ message: "Color ingresado correctamente" });
+            const id_color = result.insertId;
+            console.log(id_color)
+            res.status(201).json({ message: "Color ingresado correctamente", id_color });
         });
     }catch(err){
         console.error("Error al ingresar color", err);

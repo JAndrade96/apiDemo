@@ -2,20 +2,6 @@ const db = require('../../config/db');
 
 //Controlador Socket para obtener las motos
 
-/*const getMotos = async (socket) => {
-    const query = 'SELECT * FROM motos';
-    try{
-        const [rows] = await db.promise().query(query);
-        if(!rows || rows.length === 0){
-            return socket.emit('error', { message: "No se encontraron motos" });
-        }
-        socket.emit('motos', rows);
-    }catch(err){
-        console.error("Error al obtener motos", err);
-        socket.emit("error", { message: "Error al obtener motos" });
-    }
-};*/
-
 const getMotos = async (socket) => {
     const query = `SELECT 
                 m.id_motos,
@@ -25,16 +11,14 @@ const getMotos = async (socket) => {
                 m.cilindrada,
                 m.combustible,
                 m.rendimiento,
-                p.fecha_registro,
-                c.id_color,
+                m.fecha_registro,
                 c.nombre_color AS color,
                 cm.img_moto AS img_moto
-            FROM 
-                proforma AS p
-            INNER JOIN motos AS m ON p.id_motos = m.id_motos
-            INNER JOIN colormoto AS cm ON p.id_colormoto = cm.id_colormoto
-            INNER JOIN color AS c ON cm.id_color = c.id_color
-            LIMIT 0, 25`;
+            FROM motos m
+                LEFT JOIN colormoto cm ON cm.id_motos = m.id_motos
+                LEFT JOIN color c ON cm.id_color = c.id_color
+                ORDER BY m.modelo, cm.fecha_registro DESC
+                LIMIT 25;`;
 
             try{
                 const [rows] = await db.promise().query(query);
@@ -61,10 +45,6 @@ const getMotos = async (socket) => {
 const addMotos = async (req, res) => {
     const { modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento } = req.body;
     const fecha_registro = new Date();
-    
-    if(!modelo || !precio_usd || !inicial_bs || !cilindrada || !combustible || !rendimiento){
-        return res.status(400).json({ error: "El campo modelo de moto es obligatorio" });
-    }
 
     try{
         const query = "INSERT INTO motos (modelo, precio_usd, inicial_bs, cilindrada, combustible, rendimiento, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -75,7 +55,9 @@ const addMotos = async (req, res) => {
                 console.error("Error al ingresar motos", error);
                 return res.status(500).json({ error: "Error al ingresar motos" });
             }
-            res.status(201).json({ message: "Motos ingresada correctamente" });
+            const id_moto = result.insertId;
+            console.log(id_moto); 
+            res.status(201).json({ message: "Motos ingresada correctamente", id_moto });
         });
     }catch(err){
         console.error("Error al ingresar motos", err);
