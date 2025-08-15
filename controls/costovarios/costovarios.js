@@ -78,7 +78,7 @@ const updateCosto = async (req, res) => {
         return res.status(400).json({error: "No se proporcionaron cambios para actualizar"});
     }
 
-    const query = `UPDATE costovarios SET ${update.join(',')} WHERE id = ?`;
+    const query = `UPDATE costovarios SET ${update.join(',')} WHERE id_costovarios = ?`;
     values.push(id);
 
     db.query(query, values, (error, result) => {

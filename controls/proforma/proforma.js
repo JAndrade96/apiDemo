@@ -24,10 +24,6 @@ const addProforma = async (req, res) => {
     const {id_cliente, id_motos, id_colormoto, id_usuario, id_sucursal, plazo, precio_usd, inicial_bs, cuota_mes} = req.body
     const fecha_registro = new Date();
 
-    if(!plazo || !precio_usd || !inicial_bs || !cuota_mes){
-        return res.status(400).json({ error: "Falta campos requeridos" });
-    }
-
     try{
         const query = 'INSERT INTO proforma (id_cliente, id_motos, id_colormoto, id_usuario, id_sucursal, plazo, precio_usd, inicial_bs, cuota_mes, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         const values = [id_cliente, id_motos, id_colormoto, id_usuario, id_sucursal, plazo, precio_usd, inicial_bs, cuota_mes, fecha_registro];
