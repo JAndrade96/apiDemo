@@ -31,22 +31,28 @@ const getEtiquetaCliente = async (socket) => {
 const addEtiquetaCliente = async (req, res) => {
     const { id_cliente, id_etiquetas } = req.body;
 
-    try{
+    try {
         const query = 'INSERT INTO etiqueta_cliente (id_cliente, id_etiquetas) VALUES (?, ?)';
-        const values = [ id_cliente, id_etiquetas ];
+        const values = [id_cliente, id_etiquetas];
         
         db.query(query, values, (error, result) => {
-            if(error){
-                console.error("Error al insertar etiqueta al cliente", error);
+            if (error) {
+                if (error.code === "ER_DUP_ENTRY") {
+                    return res.status(409).json({ 
+                        message: "El cliente ya tiene asignada una etiqueta" 
+                    });
+                }
+                console.error("Error al insertar etiqueta al cliente:", error);
                 return res.status(500).json({ message: "Error al insertar etiqueta al cliente" });
             }
             res.status(201).json({ message: "Etiqueta insertada al cliente correctamente" });
         });
-    }catch(err){
+    } catch (err) {
         console.error("Error al insertar etiqueta al cliente", err);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
+
 
 //Controlador PATCH para editar etiquetas para los clientes
 

@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 const socketIo = require('socket.io');
 const http = require('http');
-const path = require('path');
 const cors = require('cors');
 const { getUsuarios } = require('./controls/usuario/usuario');
 const usuarioRouter = require('./router/usuarioRouter/usuarioRouter');
