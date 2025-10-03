@@ -71,8 +71,7 @@ const getCotizacion = async (socket) => {
             INNER JOIN 
                 usuario AS a ON p.id_usuario = a.id_usuario
             INNER JOIN 
-                sucursal AS s ON p.id_sucursal = s.id_sucursal
-            LIMIT 0, 25`;
+                sucursal AS s ON p.id_sucursal = s.id_sucursal`;
             
             try{
                 const [rows] =await db.promise().query(query);
