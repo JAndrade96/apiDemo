@@ -19,6 +19,7 @@ const inventarioSocket = async (socket) => {
 
 
 // controlador para insertar/actualizar inventario
+
 const addInventario = async (req, res) => {
     try {
         const { id_motos, id_colormoto, id_sucursal, cantidad, stock_minimo } = req.body;
@@ -27,7 +28,6 @@ const addInventario = async (req, res) => {
             return res.status(400).json({ message: "Campos obligatorios: id_motos, id_sucursal, cantidad" });
         }
 
-        // Verificar si ya existe registro en inventario para esa moto/color/sucursal
         const [existente] = await db.promise().query(
             `SELECT id_inventario, cantidad 
              FROM inventario 
@@ -38,7 +38,6 @@ const addInventario = async (req, res) => {
         );
 
         if (existente.length > 0) {
-            // Ya existe → actualizar cantidad (sumar al stock actual)
             const nuevoStock = existente[0].cantidad + cantidad;
             await db.promise().query(
                 `UPDATE inventario 
@@ -49,7 +48,6 @@ const addInventario = async (req, res) => {
 
             return res.status(200).json({ message: "Stock actualizado correctamente", nuevoStock });
         } else {
-            // No existe → crear nuevo registro en inventario
             await db.promise().query(
                 `INSERT INTO inventario (id_motos, id_colormoto, id_sucursal, cantidad, stock_minimo) 
                  VALUES (?, ?, ?, ?, ?)`,
@@ -65,8 +63,58 @@ const addInventario = async (req, res) => {
     }
 };
 
+//Controlador PATCH para editar los inventarios
+
+const updateInventario = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const { id_colormoto, id_sucursal, cantidad, stock_minimo } = req.body;
+
+        const update = [];
+        const values = [];
+
+        if(id_colormoto){
+            update.push('id_colormoto= ?');
+            values.push(id_colormoto);
+        }
+
+        if(id_sucursal){
+            update.push('id_sucursal= ?');
+            values.push(id_sucursal);
+        }
+
+        if(cantidad){
+            update.push('cantidad= ?');
+            values.push(cantidad);
+        }
+
+        if(stock_minimo){
+            update.push('stock_minimo= ?');
+            values.push(stock_minimo);
+        }
+        
+        if(update.length === 0){
+            return res.status(400).json({ error: "No se proporcionaron cambios"})
+        }
+
+        const query = `UPDATE inventario SET ${update.join(', ')} WHERE id_inventario = ?`;
+        values.push(id);
+
+        const [result] = await db.promise().query(query, values);
+
+        if(result.affectedRows === 0){
+            return res.status(404).json({ error: "Inventario no encontrado" });
+        }
+        res.status(200).json({ message: "Inventario actualizado correctamente" })
+        
+    }catch(err){
+        console.error("Error al actualizar inventario", err)
+        res.status(500).json({ error: "Error interno del servidor"})
+    }
+};
 
 module.exports = {
     inventarioSocket,
-    addInventario
+    addInventario,
+    updateInventario
 };
