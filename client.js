@@ -3,10 +3,10 @@ const socket = io('http://127.0.0.1:3000');
 
 socket.on('connect', () => {
     console.log('✅ Conectado al servidor WebSocket');
-    socket.emit('obtenerInventario');
+    socket.emit('obtenerMovimientoInventario');
 });
 
-socket.on('inventario', (data) => {
+socket.on('movimientos_inventario', (data) => {
     console.log('📦 Datos recibidos:', data);
 });
 

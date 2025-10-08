@@ -16,7 +16,7 @@ const getEtiqueta = async (socket) => {
     }
 };
 
-//Controlador PSOT para ingresar etiquetas
+//Controlador POST para ingresar etiquetas
 
 const addEtiqueta = async (req, res) => {
     const {id_usuario, nombre, color} = req.body;

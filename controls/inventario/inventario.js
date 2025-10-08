@@ -17,7 +17,6 @@ const inventarioSocket = async (socket) => {
     }
 }; 
 
-
 // controlador para insertar/actualizar inventario
 
 const addInventario = async (req, res) => {

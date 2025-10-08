@@ -26,6 +26,8 @@ const etiquetaClienteRouter = require('./router/etiquetaCliente/etiquetaCliente'
 const { getEtiquetaCliente } = require('./controls/etiquetaCliente/etiquetaCliente');
 const { inventarioSocket } = require('./controls/inventario/inventario');
 const inventarioRouter = require('./router/inventarioRouter/inventarioRouter');
+const { movimientoInventarioSocket } = require('./controls/movimiento/movimientoInventario');
+const movimientoRouter = require('./router/movimientoRouter/movimientoInventariorRouter');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,6 +74,7 @@ io.on('connection', (socket) => {
     socket.on('obtenerEtiqueta', () => getEtiqueta(socket));
     socket.on('obtenerEtiquetaCliente', () => getEtiquetaCliente(socket));
     socket.on('obtenerInventario', () => inventarioSocket(socket));
+    socket.on('obtenerMovimientoInventario', () => movimientoInventarioSocket(socket));
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
@@ -94,6 +97,7 @@ app.use('/', proformaRouter);
 app.use('/', etiquetaRouter);
 app.use('/', etiquetaClienteRouter);
 app.use('/', inventarioRouter);
+app.use('/', movimientoRouter);
 
 const PORT = process.env.API_PORT || 3001;
 server.listen(PORT, () => {
