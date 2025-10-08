@@ -105,7 +105,7 @@ app.use('/', inventarioRouter);
 app.use('/', movimientoRouter);
 app.use('/', vehiculoVendidoRouter);
 
-const PORT = process.env.API_PORT || 3001;
+const PORT = process.env.API_PORT;
 server.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`)
 });
