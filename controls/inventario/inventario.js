@@ -117,8 +117,45 @@ const updateInventario = async (req, res) => {
     }
 };
 
+// Controlador específico para seguimiento de clientes - inventario con datos completos
+const inventarioCompletoSocket = async (socket) => {
+    try {
+        const query = `
+            SELECT 
+                i.id_inventario,
+                i.id_motos,
+                i.id_colormoto,
+                i.id_sucursal,
+                i.cantidad,
+                i.stock_minimo,
+                m.modelo,
+                c.nombre_color,
+                s.nombre_sucursal
+            FROM inventario i
+            INNER JOIN motos m ON i.id_motos = m.id_motos
+            LEFT JOIN colormoto cm ON i.id_colormoto = cm.id_colormoto
+            LEFT JOIN color c ON cm.id_color = c.id_color
+            INNER JOIN sucursal s ON i.id_sucursal = s.id_sucursal
+            ORDER BY m.modelo, c.nombre_color
+        `;
+
+        const [rows] = await db.promise().query(query);
+        
+        if (!rows || rows.length === 0) {
+            return socket.emit('error', { message: "No se encontraron productos en los almacenes" });
+        }
+        
+        //console.log("📦 Inventario completo para seguimiento:", rows.length, "registros");
+        socket.emit('inventarioCompleto', rows);
+    } catch (err) {
+        console.error("Error al obtener inventario completo", err);
+        socket.emit("error", { message: "Error al obtener inventario completo" });
+    }
+};
+
 module.exports = {
     inventarioSocket,
+    inventarioCompletoSocket, 
     addInventario,
     updateInventario
 };
