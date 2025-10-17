@@ -24,7 +24,7 @@ const { getEtiqueta } = require('./controls/etiquetas/etiquetas');
 const etiquetaRouter = require('./router/etiquetaRouter/etiquetaRouter');
 const etiquetaClienteRouter = require('./router/etiquetaCliente/etiquetaCliente');
 const { getEtiquetaCliente } = require('./controls/etiquetaCliente/etiquetaCliente');
-const { inventarioSocket } = require('./controls/inventario/inventario');
+const { inventarioSocket, inventarioCompletoSocket } = require('./controls/inventario/inventario'); 
 const inventarioRouter = require('./router/inventarioRouter/inventarioRouter');
 const { movimientoInventarioSocket } = require('./controls/movimiento/movimientoInventario');
 const movimientoRouter = require('./router/movimientoRouter/movimientoInventariorRouter');
@@ -78,6 +78,9 @@ io.on('connection', (socket) => {
     socket.on('obtenerEtiqueta', () => getEtiqueta(socket));
     socket.on('obtenerEtiquetaCliente', () => getEtiquetaCliente(socket));
     socket.on('obtenerInventario', () => inventarioSocket(socket));
+    
+    socket.on('obtenerInventarioCompleto', () => inventarioCompletoSocket(socket));
+    
     socket.on('obtenerMovimientoInventario', () => movimientoInventarioSocket(socket));
     socket.on('obtenerVehiculoVendido', () => vehiculosVendidosSocket(socket));
 
