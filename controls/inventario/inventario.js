@@ -130,7 +130,7 @@ const inventarioCompletoSocket = async (socket) => {
                 i.stock_minimo,
                 m.modelo,
                 c.nombre_color,
-                s.nombre_sucursal
+                s.sucursal
             FROM inventario i
             INNER JOIN motos m ON i.id_motos = m.id_motos
             LEFT JOIN colormoto cm ON i.id_colormoto = cm.id_colormoto
