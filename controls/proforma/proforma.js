@@ -44,7 +44,8 @@ const addProforma = async (req, res) => {
 //Controlador para obtener las proforma detallada
 
 const getCotizacion = async (socket) => {
-    const query = `SELECT 
+    const query = `SELECT
+                p.id_proforma, 
                 c.id_cliente,
                 c.nombre AS nombre_cliente,
                 c.telefono,
