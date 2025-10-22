@@ -8,6 +8,7 @@ const vehiculosVendidosSocket = async (socket) => {
         vv.id_vendido,
         vv.cantidad,
         vv.fecha_venta,
+        vv.estado,
         p.id_proforma,
         c.nombre AS nombre_cliente,
         i.id_inventario,
