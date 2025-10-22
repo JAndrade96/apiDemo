@@ -4,28 +4,37 @@ const db = require('../../config/db');
 
 const vehiculosVendidosSocket = async (socket) => {
     const query = `
-        SELECT 
-            vv.id_vendido,
-            vv.cantidad,
-            vv.fecha_venta,
-            p.id_proforma,
-            p.nombre_cliente,
-            p.ci_nit,
-            i.id_inventario,
-            i.id_sucursal,
-            s.nombre_sucursal,
-            m.id_motos,
-            m.modelo,
-            m.marca,
-            cm.color
-        FROM vehiculos_vendidos vv
-        INNER JOIN proforma p ON vv.id_proforma = p.id_proforma
-        INNER JOIN inventario i ON vv.id_inventario = i.id_inventario
-        INNER JOIN motos m ON i.id_motos = m.id_motos
-        LEFT JOIN colormoto cm ON i.id_colormoto = cm.id_colormoto
-        INNER JOIN sucursal s ON i.id_sucursal = s.id_sucursal
-        ORDER BY vv.fecha_venta DESC;
-    `;
+      SELECT
+        vv.id_vendido,
+        vv.cantidad,
+        vv.fecha_venta,
+        p.id_proforma,
+        c.nombre AS nombre_cliente,
+        i.id_inventario,
+        i.id_sucursal,
+        s.sucursal AS nombre_sucursal,
+        m.id_motos,
+        m.modelo,
+        co.nombre_color AS color
+      FROM
+        vehiculos_vendidos vv
+      INNER JOIN
+        proforma p ON vv.id_proforma = p.id_proforma
+      INNER JOIN
+        inventario i ON vv.id_inventario = i.id_inventario
+      INNER JOIN
+        motos m ON i.id_motos = m.id_motos
+      INNER JOIN
+        sucursal s ON i.id_sucursal = s.id_sucursal
+      INNER JOIN
+        cliente c ON p.id_cliente = c.id_cliente
+      LEFT JOIN
+        colormoto cm ON i.id_colormoto = cm.id_colormoto
+      LEFT JOIN
+        color co ON cm.id_color = co.id_color
+      ORDER BY
+        vv.fecha_venta DESC;
+      `;
 
     try {
         const [rows] = await db.promise().query(query);
